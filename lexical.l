@@ -6,7 +6,7 @@
 %}
 /* -- Partie : Expressions -- */
 commentls --
-commentm "{"-(.|\n)*-"}"
+commentm "{-"(.|\n)*"-}"
 lettre [a-zA-Z]
 chiffre [0-9]
 IDF {lettre}({lettre}|{chiffre}|_){0,9}
@@ -29,12 +29,12 @@ SINON  {return SINON;}
 TANTQUE  {return TANTQUE;}
 affiche  {return AFFICHE;}
 lire  {return LIRE;}
-"{" printf("{\n");
-"}" printf("}\n");
-"[" printf("[ ");
-"]" printf("]"); 
-")" printf(")");
-"(" printf("(");
+"{" {return '{';}
+"}" {return '}';}
+"[" {return ']';}
+"]" {return '[';} 
+")" {return ')';}
+"(" {return '(';}
 ";" {return ';';}
 ":" {return ':';}
 {IDF} {return IDF;}

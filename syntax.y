@@ -8,7 +8,7 @@
 
 %start program
 %%
-program: DEBUT declaration EXECUTION {printf("cool man");}
+program: DEBUT declaration EXECUTION '{' body '}' FIN {printf("UwU master youw code is sywantiquawy cowwect !!");}
 ;
 
 declaration: dectype declaration | fix declaration | 
@@ -22,6 +22,17 @@ fix: FIXE TEXT ':' IDF OP STRING ';' | FIXE NUM ':' IDF OP CST ';' | FIXE REAL '
 
 type: NUM | TEXT | REAL
 ;
+
+body: affectation body|
+;
+
+affectation: IDF AFF operation ';'
+;
+
+operation: CST OP operation | IDF OP operation | CST | IDF | '('operation')' | '('operation')' OP operation 
+;
+
+
 
 %%
 int yyerror(char *msg) {
