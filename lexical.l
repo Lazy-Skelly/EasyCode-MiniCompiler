@@ -5,14 +5,14 @@
     int nb_ligne=1;
 %}
 /* -- Partie : Expressions -- */
-commentls --
-commentm "{-"(.|\n)*"-}"
+commentls (--.*##)|("{"-(.|\t)*-"}")
+commentm "{"(.|\n)*"}"
 lettre [a-zA-Z]
 chiffre [0-9]
 IDF {lettre}({lettre}|{chiffre}|_){0,9}
 cst {chiffre}+
 string \".*\"
-operator ["*"+-/<=>]|<=|>=|!=
+operator ["*"+/<=>]|<=|>=|!=
 %%
 commentls {printf("commentl");}
 commentm {printf("commentm");}
@@ -31,12 +31,13 @@ affiche  {return AFFICHE;}
 lire  {return LIRE;}
 "{" {return '{';}
 "}" {return '}';}
-"[" {return ']';}
-"]" {return '[';} 
+"[" {return '[';}
+"]" {return ']';} 
 ")" {return ')';}
 "(" {return '(';}
 ";" {return ';';}
 ":" {return ':';}
+"," {return ',';}
 {IDF} {return IDF;}
 {cst} {return CST;}
 {string} {return STRING;}

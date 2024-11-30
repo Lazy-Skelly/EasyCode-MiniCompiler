@@ -1,3 +1,4 @@
+
 %{
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,13 +9,13 @@
 
 %start program
 %%
-program: DEBUT declaration EXECUTION '{' body '}' FIN {printf("UwU master youw code is sywantiquawy cowwect !!");}
+program: DEBUT declaration EXECUTION '{' body '}' FIN {printf("UwU master youw code is sywantiquawy cowwect !! \\( \"UwU)/");}
 ;
 
 declaration: dectype declaration | fix declaration | 
 ;
 
-dectype: type ':' IDF ';' 
+dectype: type ':' IDF ';' | type ':' IDF '[' CST ']' ';'
 ;
 
 fix: FIXE TEXT ':' IDF OP STRING ';' | FIXE NUM ':' IDF OP CST ';' | FIXE REAL ':' IDF OP CST ';'
@@ -23,16 +24,26 @@ fix: FIXE TEXT ':' IDF OP STRING ';' | FIXE NUM ':' IDF OP CST ';' | FIXE REAL '
 type: NUM | TEXT | REAL
 ;
 
-body: affectation body|
+body: affectation body| function body| condition body | boucle body |
 ;
 
 affectation: IDF AFF operation ';'
 ;
 
-operation: CST OP operation | IDF OP operation | CST | IDF | '('operation')' | '('operation')' OP operation 
+operation: CST OP operation | IDF OP operation | IDF '[' CST ']' operation | CST | IDF | IDF '[' CST ']' | '('operation')' | '('operation')' OP operation 
 ;
 
+function: LIRE '('IDF')' ';' | AFFICHE '(' expression ')' ';'
+;
 
+expression: operation ',' expression| STRING ',' expression| operation | STRING
+;
+
+condition: SI '(' operation ')' ALORS '{' body '}' | SI '(' ')' ALORS '{' body '}' SINON '{' body '}'
+;
+
+boucle: TANTQUE '(' operation ')' '{' body '}'
+;
 
 %%
 int yyerror(char *msg) {
@@ -46,3 +57,4 @@ main() {
 
 yywrap()
 {}
+
