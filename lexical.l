@@ -5,17 +5,17 @@
     int nb_ligne=1;
 %}
 /* -- Partie : Expressions -- */
-commentls (--.*##)|("{"-(.|\t)*-"}")
-commentm "{"(.|\n)*"}"
+commentls "--".*?"##"
+commentm "{-"(.|\n)*"-}"
+operator ["*"+/<=>]|<=|>=|!=|-|" ET "|" OU "|" NON "
 lettre [a-zA-Z]
 chiffre [0-9]
 IDF {lettre}({lettre}|{chiffre}|_){0,9}
 cst {chiffre}+
 string \".*\"
-operator ["*"+/<=>]|<=|>=|!=
 %%
-commentls {printf("commentl");}
-commentm {printf("commentm");}
+{commentls}
+{commentm}
 DEBUT {return DEBUT;}
 FIN {return FIN;}
 EXECUTION {return EXECUTION;}
