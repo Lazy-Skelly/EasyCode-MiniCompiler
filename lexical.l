@@ -2,7 +2,8 @@
 %{
     // Partie : Declarations en C
     #include "syntax.tab.h"
-    int nb_ligne=1;
+    extern int nb_ligne;
+    extern YYSTYPE yylval;
 %}
 /* -- Partie : Expressions -- */
 commentls "--".*?"##"
@@ -12,6 +13,8 @@ lettre [a-zA-Z]
 chiffre [0-9]
 IDF {lettre}({lettre}|{chiffre}|_){0,9}
 cst {chiffre}+
+integer [\-]?{chiffre}+
+fl [\-]?{chiffre}+(\.{chiffre}+)?
 string \".*\"
 %%
 {commentls}
@@ -38,9 +41,11 @@ lire  {return LIRE;}
 ";" {return ';';}
 ":" {return ':';}
 "," {return ',';}
-{IDF} {return IDF;}
-{cst} {return CST;}
-{string} {return STRING;}
+{IDF} {yylval.value= yytext ;return IDF;}
+{cst} {yylval.value= yytext ;return CST;}
+{integer} {yylval.value = yytext ;return integer;}
+{fl} {yylval.value= yytext ;return fl;}
+{string} {yylval.value = yytext ;return STRING;}
 {operator} {return OP;}
 "<-" {return AFF;}
 
