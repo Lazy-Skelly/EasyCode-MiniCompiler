@@ -30,10 +30,10 @@ program: DEBUT declaration EXECUTION '{' body '}' FIN {printf("UwU master youw c
 declaration: dectype declaration | fix declaration | 
 ;
 
-dectype: type ':' IDF encore ';' {if(!rechercher($3)){printf("%s\n",$3);inserer($3,currenttype,1);}}| type ':' IDF '[' CST ']' encore {if(!rechercher($3)){inserer($3,currenttype+2,$5);}}';'
+dectype: type ':' IDF encore ';' {if(!rechercher($3)){inserer($3,currenttype,1);}}| type ':' IDF '[' CST ']' encore {if(!rechercher($3)){inserer($3,currenttype+2,$5);}}';'
 ;
 
-encore: ',' affectation encore | ',' IDF encore | ',' IDF '[' CST ']' encore |
+encore: ',' IDF encore {if(!rechercher($2)){inserer($2,currenttype,1);}}| ',' IDF '[' CST ']' encore {if(!rechercher($2)){inserer($2,currenttype,1);}}|
 ;
 
 fix: FIXE TEXT ':' IDF OP STRING ';' | FIXE NUM ':' IDF OP CST ';' | FIXE REAL ':' IDF OP values ';'
@@ -48,7 +48,9 @@ body: affectation ';' body| function body| condition body | boucle body |
 affectation: IDF AFF operation
 ;
 
-operation: values OP operation | IDF OP operation | IDF '[' CST ']' operation | values | IDF | IDF '[' CST ']' | '('operation')' | '('operation')' OP operation 
+operation: values OP operation | IDF OP operation {verifierVariableNonDeclaree($1);}| IDF '[' CST ']' operation {verifierVariableNonDeclaree($1);}| 
+values | IDF {verifierVariableNonDeclaree($1);}| IDF '[' CST ']' {verifierVariableNonDeclaree($1);}|
+'('operation')' | '('operation')' OP operation 
 ;
 
 values: CST | fl | integer

@@ -42,11 +42,11 @@ lire  {return LIRE;}
 ";" {return ';';}
 ":" {return ':';}
 "," {return ',';}
-{IDF} {yylval.value= yytext ;printf("%s",yytext);return IDF;}
-{cst} {yylval.value= yytext ;return CST;}
-{integer} {yylval.value = yytext ;return integer;}
-{fl} {yylval.value= yytext ;return fl;}
-{string} {yylval.value = yytext ;return STRING;}
+{IDF} {yylval.value= strdup(yytext) ;return IDF;}
+{cst} {yylval.value= strdup(yytext) ;return CST;}
+{integer} {yylval.value = strdup(yytext) ;return integer;}
+{fl} {yylval.value= strdup(yytext) ;return fl;}
+{string} {yylval.value = strdup(yytext) ;return STRING;}
 {operator} {return OP;}
 "<-" {return AFF;}
 
