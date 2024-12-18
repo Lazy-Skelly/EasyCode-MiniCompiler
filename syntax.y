@@ -3,6 +3,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 int nb_ligne = 1;
+int currenttype = -1;
+
+#define INT 0
+#define FLOAT 1
+#define TEX 2
+#define INTTABLE 3
+#define FLOATTABLE 4
+#define NONE -1
+
 %}
 
 //int 0, float 1, string 2
@@ -15,13 +24,13 @@ int nb_ligne = 1;
 
 %start program
 %%
-program: DEBUT declaration EXECUTION '{' body '}' FIN {printf("UwU master youw code is sywantiquawy cowwect !! \\( \"UwU)/");}
+program: DEBUT declaration EXECUTION '{' body '}' FIN {printf("UwU master youw code is sywantiquawy cowwect !! \\( \"UwU)/\n");}
 ;
 
 declaration: dectype declaration | fix declaration | 
 ;
 
-dectype: type ':' IDF encore ';' {printf("we got %s",$3);}| type ':' IDF '[' CST ']' encore ';'
+dectype: type ':' IDF encore ';' {if(!rechercher($3)){printf("%s\n",$3);inserer($3,currenttype,1);}}| type ':' IDF '[' CST ']' encore {if(!rechercher($3)){inserer($3,currenttype+2,$5);}}';'
 ;
 
 encore: ',' affectation encore | ',' IDF encore | ',' IDF '[' CST ']' encore |
@@ -30,7 +39,7 @@ encore: ',' affectation encore | ',' IDF encore | ',' IDF '[' CST ']' encore |
 fix: FIXE TEXT ':' IDF OP STRING ';' | FIXE NUM ':' IDF OP CST ';' | FIXE REAL ':' IDF OP values ';'
 ; 
 
-type: NUM | TEXT | REAL
+type: NUM {currenttype = INT}| TEXT {currenttype = TEX}| REAL {currenttype = FLOAT}
 ;
 
 body: affectation ';' body| function body| condition body | boucle body |
@@ -65,6 +74,7 @@ int yyerror(char *msg) {
 main() {
 	
     yyparse();
+    afficher();
 }
 
 yywrap()

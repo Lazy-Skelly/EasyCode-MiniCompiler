@@ -2,6 +2,7 @@
 %{
     // Partie : Declarations en C
     #include "syntax.tab.h"
+    #include "table.h"
     extern int nb_ligne;
     extern YYSTYPE yylval;
 %}
@@ -41,7 +42,7 @@ lire  {return LIRE;}
 ";" {return ';';}
 ":" {return ':';}
 "," {return ',';}
-{IDF} {yylval.value= yytext ;return IDF;}
+{IDF} {yylval.value= yytext ;printf("%s",yytext);return IDF;}
 {cst} {yylval.value= yytext ;return CST;}
 {integer} {yylval.value = yytext ;return integer;}
 {fl} {yylval.value= yytext ;return fl;}
